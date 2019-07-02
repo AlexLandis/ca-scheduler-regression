@@ -38,6 +38,47 @@ Cypress.Commands.add('caLogin', () => {
 
 });
 
+Cypress.Commands.add('caSeedAreas', () => {
+    cy.request({
+        method: 'POST',
+        url: '/api/club/location/area',
+        body: {
+            entity: {
+                id: 4
+            },
+            name: 'Name ' + Date.now(),
+            rooms: [{
+                name: 'Room' + Date.now()
+            }],
+            schedule: {
+                name: "Standard Season", 
+                startDate: "2019-07-02", 
+                endDate: "2099-12-31",
+                name: "Standard Season",
+                startDate: "2019-07-02",
+                workTimes: [{name: "sunday", startTime: "07:00:00", endTime: "22:30:00"},
+                {name: "monday", startTime: "06:00:00", endTime: "22:30:00"},
+                {name: "tuesday", startTime: "06:00:00", endTime: "22:30:00"},
+                {name: "wednesday", startTime: "06:00:00", endTime: "22:30:00"},
+                {name: "thursday", startTime: "06:00:00", endTime: "22:30:00"},
+                {name: "friday", startTime: "06:00:00", endTime: "22:30:00"},
+                {name: "saturday", startTime: "07:00:00", endTime: "22:30:00"}
+            ]}
+        },
+        headers: {
+            Authorization:
+                "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJybVZPRGNKVG5YWjN6Zzl3T0s5QUdURElPc3RyVktLeThud0VjU21uIiwiaWF0IjoxNTYyMDk0NzYwLCJzdWIiOjEsInNjcCI6WyJwdWJsaWMiLCJwcml2YXRlIl19.isIAPZGhALjNHyZuzWQlbUQCdGuJYAmZ0E3uDGnJgDw",
+            Connection: "keep-alive",
+            Cookie: "PHPSESSID=kjp0mqfts2p3oshuhqhu49q84p",
+            DNT: 1,
+            Host: "dev3.clubautomation.com",
+            Origin: "https://dev3.clubautomation.com",
+            Pragma: "no-cache",
+            Referer: "https://dev3.clubautomation.com/scheduler/admin/areas/new?entityId=4"
+        }
+    })
+})
+
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
