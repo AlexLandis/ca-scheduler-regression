@@ -39,6 +39,7 @@ Cypress.Commands.add('caLogin', () => {
 });
 
 Cypress.Commands.add('caSeedAreas', () => {
+    const areaName = 'Name ' + Date.now()
     cy.request({
         method: 'POST',
         url: '/api/club/location/area',
@@ -46,7 +47,7 @@ Cypress.Commands.add('caSeedAreas', () => {
             entity: {
                 id: 4
             },
-            name: 'Name ' + Date.now(),
+            name: areaName,
             rooms: [{
                 name: 'Room' + Date.now()
             }],
@@ -76,6 +77,11 @@ Cypress.Commands.add('caSeedAreas', () => {
             Pragma: "no-cache",
             Referer: "https://dev3.clubautomation.com/scheduler/admin/areas/new?entityId=4"
         }
+    }).as('areaPost').then((response) => {
+        const areaId = response.body.data.id;
+        cy.log(areaName)
+        cy.log(areaId)
+        expect(response.body.data.id).to.eq(areaId) //makes sure variable is set
     })
 })
 
