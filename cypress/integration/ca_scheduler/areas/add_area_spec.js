@@ -1,12 +1,12 @@
-describe('Adds new Area to Globo Gym', () => {
+describe('Adds new Area to Automation_Entity', () => {
 context('with basic valid inputs', () => {
     beforeEach(() => {
         cy.caLogin()
-        cy.visit('/scheduler/admin/entities/4')
+        cy.visit('/scheduler/admin/entities/17')
     })
 
     it('successfully adds area', () => {
-        cy.get('h1').should('contain', 'Globo Gym')
+        cy.get('h1').should('contain', 'Automation_Entity')
         cy.contains('Add Area').click()
 
         //inputs general information
@@ -14,7 +14,6 @@ context('with basic valid inputs', () => {
         cy.get('input[name="resource.0.name"]').focus().type('Resource ' + Date.now()).blur()
         cy.get('button[id="area-submit"]').click()
         
-        cy.url().should('contain', '/scheduler/admin/entities')
         //cy.get('#area-submit').contains('Submit').click()
     });
 });

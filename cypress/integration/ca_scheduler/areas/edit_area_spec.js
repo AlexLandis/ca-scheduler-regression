@@ -1,17 +1,18 @@
-describe('Edits existing automation area under Globo Gym', () => {
+describe('Edits existing automation area under Automation_Entity', () => {
     context('with basic valid inputs', () => {
         let assertAreaName
         let assertAreaId
+        let editedAreaName
         beforeEach(() => {
             cy.caLogin()
             cy.caSeedAreas()
             cy.server();
             cy.route(
                 'GET',
-                '/api/club/location/area-list?entityIds=4'
+                '/api/club/location/area-list?entityIds=17'
             ).as('getAreas')
 
-            cy.visit('/scheduler/admin/entities/4')
+            cy.visit('/scheduler/admin/entities/17')
             cy.wait('@getAreas').then((response) => {
                 if (response.status === 200) {
                     const newArea = response.responseBody.data
@@ -27,11 +28,25 @@ describe('Edits existing automation area under Globo Gym', () => {
             cy.get('h3').contains(assertAreaName).should('exist');
         })
 
-        it('verifies URL navigation to existing area', () => {
-            cy.visit('/scheduler/admin/areas/' + assertAreaId + '?entityId=4')
+        it.only('verifies URL navigation to existing area and edits and saves new values', () => {
+            cy.route('PUT', '/api/club/location/area').as('putArea');
+            cy.visit('/scheduler/admin/areas/' + assertAreaId + '?entityId=17')
             cy.get('h1').should('contain', assertAreaName)
-        })
-        
+            cy.get('.card-edit').first().click()
+            cy.get('.edit-buttons').should('be.visible')
+            cy.get('input[name = name]').focus().type('{home}{del}{del}{del}{del}Edit').blur()
+            cy.get('.edit-save').contains('Save').click()
+            cy.wait('@putArea')
+            cy.get('@putArea').then((xhr) => {
+                editedAreaName = xhr.requestBody.name
+                cy.log(editedAreaName)
 
+                cy.get('h1').contains('Edit').should('exist')
+                cy.get('.secondary-sub-nav-tree').contains('Areas').click()
+                cy.url().should('contain', 'scheduler/admin/entities/17')
+                cy.log(editedAreaName)
+                cy.get('h3').contains(editedAreaName).should('exist')
+            })
+        })
     })
 })

@@ -25,7 +25,7 @@ Cypress.Commands.add('caLogin', () => {
         },
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Authorization: 'Basic NmU1ZjNjN2VkMDkxMzc1NDZiNzhhMDlkN2E0NWMyZjE6ZGV2M19zZWNyZXQ='
+            Authorization: 'Basic bHNfaWQ6bHNfc2VjcmV0'
         }
 
     })
@@ -45,7 +45,7 @@ Cypress.Commands.add('caSeedAreas', () => {
         url: '/api/club/location/area',
         body: {
             entity: {
-                id: 4
+                id: 17
             },
             name: areaName,
             rooms: [{
@@ -68,14 +68,14 @@ Cypress.Commands.add('caSeedAreas', () => {
         },
         headers: {
             Authorization:
-                "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJybVZPRGNKVG5YWjN6Zzl3T0s5QUdURElPc3RyVktLeThud0VjU21uIiwiaWF0IjoxNTYyMDk0NzYwLCJzdWIiOjEsInNjcCI6WyJwdWJsaWMiLCJwcml2YXRlIl19.isIAPZGhALjNHyZuzWQlbUQCdGuJYAmZ0E3uDGnJgDw",
+                "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjTmtPN3ZCa0tsWFdab2FmZDRlMmEzTXoyMXpZNHZsWU9UWWM2NmZBIiwiaWF0IjoxNTYzMzA0MjU1LCJzdWIiOjEsInNjcCI6WyJwdWJsaWMiLCJwcml2YXRlIl19.IXDZ7SSwg4mrbinlCgziUFWapmD0NZs3r-XCmSPflR4",
             Connection: "keep-alive",
-            Cookie: "PHPSESSID=kjp0mqfts2p3oshuhqhu49q84p",
+            Cookie: "PHPSESSID=erviummqanof7o62j9rgrkg7vf",
             DNT: 1,
-            Host: "dev3.clubautomation.com",
-            Origin: "https://dev3.clubautomation.com",
+            Host: "u2regression.clubautomation.com",
+            Origin: "https://u2regression.clubautomation.com",
             Pragma: "no-cache",
-            Referer: "https://dev3.clubautomation.com/scheduler/admin/areas/new?entityId=4"
+            Referer: "https://u2regression.clubautomation.com/scheduler/admin/areas/new?entityId=17"
         }
     }).as('areaPost').then((response) => {
         const areaId = response.body.data.id;
