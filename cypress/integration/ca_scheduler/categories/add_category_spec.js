@@ -27,7 +27,7 @@ describe('Add a new category', () => {
             cy.get('span').contains('Add Category').should('be.visible').click()
             cy.wait('@getClubDetails')
             cy.url().should('contain', 'scheduler/admin/categories/new?')
-            cy.wait('@getClubDetails', {timeout: 100000})
+            //cy.wait('@getClubDetails', {timeout: 10000})
 
             cy.get('input[placeholder="Enter Category Name"]').should('be.visible').focus().type('Cat.' + Date.now())
             cy.get('.select-V2-container').should('be.visible')
