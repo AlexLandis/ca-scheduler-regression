@@ -2,7 +2,7 @@ describe('Adds new Area to Automation_Entity', () => {
 context('with basic valid inputs', () => {
     beforeEach(() => {
         cy.caLogin()
-        cy.visit('/scheduler/admin/entities/17')
+        cy.visit('/club-settings/entities/17')
     })
 
     it('successfully adds area', () => {

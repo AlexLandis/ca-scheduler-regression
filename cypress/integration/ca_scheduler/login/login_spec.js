@@ -2,7 +2,7 @@ describe('Login spec', () => {
 context('UI - with valid parameters', () => {
     beforeEach(() => {
         cy.visit('scheduler/logout')
-        cy.visit('/scheduler/login');
+        cy.visit('/club-settings/login');
         cy.url().should('contain', '/login');
     });
 
@@ -19,16 +19,16 @@ context('UI - with valid parameters', () => {
         cy.get('@get_token').click()
 
         //assertions made once logged in
-        cy.get('h1').should('contain', 'Entity List')
+        cy.get('h1').should('contain', 'New Scheduler Admin')
         //this will eventually change to club-settings
-        cy.url().should('contain', 'admin/entities')
+        cy.url().should('contain', 'club-settings')
     }); 
   });
 
   context('API- with valid parameters',() => {
     beforeEach(() => {
       cy.caLogin()
-      cy.visit('/scheduler/admin/entities')
+      cy.visit('/club-settings/entities')
     })
     it('verifies landing page with authorization granted', () => {
       cy.get('.club-title').contains('Deerfield Athletic Association').should('be.visible')

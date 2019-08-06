@@ -9,10 +9,10 @@ describe('Edits existing automation area under Automation_Entity', () => {
             cy.server();
             cy.route(
                 'GET',
-                '/api/club/location/area-list?entityIds=17'
+                '/api/club/location/areas?entityIds=17'
             ).as('getAreas')
 
-            cy.visit('/scheduler/admin/entities/17')
+            cy.visit('/club-settings/entities/17')
             cy.wait('@getAreas').then((response) => {
                 if (response.status === 200) {
                     const newArea = response.responseBody.data
@@ -29,8 +29,8 @@ describe('Edits existing automation area under Automation_Entity', () => {
         })
 
         it.only('verifies URL navigation to existing area and edits and saves new values', () => {
-            cy.route('PUT', '/api/club/location/area').as('putArea');
-            cy.visit('/scheduler/admin/areas/' + assertAreaId + '?entityId=17')
+            cy.route('PUT', '/api/club/location/areas/' + assertAreaId).as('putArea');
+            cy.visit('/club-settings/areas/' + assertAreaId + '?entityId=17')
             cy.get('h1').should('contain', assertAreaName)
             cy.get('.card-edit').first().click()
             cy.get('.edit-buttons').should('be.visible')
@@ -43,7 +43,7 @@ describe('Edits existing automation area under Automation_Entity', () => {
 
                 cy.get('h1').contains('Edit').should('exist')
                 cy.get('.secondary-sub-nav-tree').contains('Areas').click()
-                cy.url().should('contain', 'scheduler/admin/entities/17')
+                cy.url().should('contain', 'club-settings/entities/17')
                 cy.log(editedAreaName)
                 cy.get('h3').contains(editedAreaName).should('exist')
             })

@@ -10,9 +10,9 @@ describe('Add a new category', () => {
             ).as('getClubDetails')
             cy.route(
                 'GET',
-                '/api/component/component-list'
+                '/api/component/components'
             ).as('getComponentList')
-            cy.visit('/scheduler/admin/components')
+            cy.visit('/club-setting/components')
             cy.get('h1').contains('Service Components').should('be.visible')
             cy.wait('@getComponentList')
         })
@@ -26,7 +26,7 @@ describe('Add a new category', () => {
             cy.get('button').contains('Customize').click()
             cy.get('span').contains('Add Category').should('be.visible').click()
             cy.wait('@getClubDetails')
-            cy.url().should('contain', 'scheduler/admin/categories/new?')
+            cy.url().should('contain', 'club-settings/categories/new?')
             //cy.wait('@getClubDetails', {timeout: 10000})
 
             cy.get('input[placeholder="Enter Category Name"]').should('be.visible').focus().type('Cat.' + Date.now())
