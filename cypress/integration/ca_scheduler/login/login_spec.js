@@ -10,7 +10,7 @@ context('UI - with valid parameters', () => {
       cy.visit('scheduler/logout')
     })
 
-    it('should login', () => {
+    it('should login through UI', () => {
         cy.get('button').contains('Get Token').as('get_token').should('be.visible');
         cy.get('input[name=API_USER]').should('be.visible').focus().type('globaladmin').blur();
         cy.get('input[name=API_PASS]').should('be.visible').focus().type('Dassen!985').blur();
@@ -18,9 +18,8 @@ context('UI - with valid parameters', () => {
         cy.get('input[name=CLIENT_SECRET]').should('be.visible').focus().type('ls_secret').blur();
         cy.get('@get_token').click()
 
-        //assertions made once logged in
+        
         cy.get('h1').should('contain', 'New Scheduler Admin')
-        //this will eventually change to club-settings
         cy.url().should('contain', 'club-settings')
     }); 
   });
