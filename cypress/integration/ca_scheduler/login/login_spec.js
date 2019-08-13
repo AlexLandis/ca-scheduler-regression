@@ -17,7 +17,6 @@ context('UI - with valid parameters', () => {
         cy.get('input[name=CLIENT_ID]').should('be.visible').focus().type('ls_id').blur();
         cy.get('input[name=CLIENT_SECRET]').should('be.visible').focus().type('ls_secret').blur();
         cy.get('@get_token').click()
-
         
         cy.get('h1').should('contain', 'New Scheduler Admin')
         cy.url().should('contain', 'club-settings')
@@ -26,11 +25,23 @@ context('UI - with valid parameters', () => {
 
   context('API- with valid parameters',() => {
     beforeEach(() => {
+      cy.server()
+      cy.route(
+        'GET',
+        '/api/club/details'
+      ).as('getClubDetails')
       cy.caLogin()
       cy.visit('/club-settings/entities')
+      cy.wait('@getClubDetails')
+
     })
     it('verifies landing page with authorization granted', () => {
-      cy.get('.club-title').contains('Deerfield Athletic Association').should('be.visible')
+      let clubName
+      cy.get('@getClubDetails').then((xhr) => {
+        clubName = xhr.responseBody.data.title
+        cy.log(xhr.responseBody.data.title)
+        cy.get('.club-title').should('contain', clubName).and('be.visible')
+      })  
     })
   }) 
 });
