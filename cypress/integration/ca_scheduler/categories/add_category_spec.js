@@ -2,6 +2,8 @@ describe('Add a new category', () => {
     let componentId
     let componentName
     let entityList
+    let agId
+    let agName
     context('through the UI', () => {
 
         beforeEach(() => {
@@ -27,7 +29,7 @@ describe('Add a new category', () => {
             })
         })
 
-        it.only('verifies a valid component exists', () => {
+        it('verifies a valid component exists', () => {
             cy.get('.ca-ui-tile-grid').as('tileGrid').should('be.visible')
             cy.get('@tileGrid').children().as('componentTile').should('be.visible')
             cy.get('@componentTile').contains(componentName).should('be.visible')
@@ -46,7 +48,7 @@ describe('Add a new category', () => {
         })
         
             describe('fetched Entities', () => {
-                Cypress._.range(0, 4).forEach((k) => {
+                Cypress._.range(0, 1).forEach((k) => {
                     it(`# ${k}`, function() {
                         const entity = this.entities[k];
                         cy.log(`entity ${entity.id} ${entity.name}`);
@@ -58,16 +60,41 @@ describe('Add a new category', () => {
 
         })
 
-        it('with basic inputs', () => {
-            cy.get('button').contains('Customize').click()
-            cy.get('span').contains('Add Category').should('be.visible').click()
+        it('navigates to component and selects add category button', () => {
+            cy.visit('/club-settings/components/' + componentId )
+            cy.get('.nav-tree-item-label').contains('Add Category').should('be.visible').click()
             cy.wait('@getClubDetails')
             cy.url().should('contain', 'club-settings/categories/new?')
-            //cy.wait('@getClubDetails', {timeout: 10000})
-
+        })
+        
+        it.only('inputs required field information for category creation', () => {
+            cy.server()
+            cy.route(
+                'GET',
+                'api/component/components/' + componentId
+            ).as('getComponent')
+            cy.route(
+                'GET',
+                '/api/accounting/accounting-groups?entityId=17&limit=50&offset=0'
+            ).as('accountingGrps')
+            cy.visit('/club-settings/categories/new?componentId=' + componentId)
+            cy.wait('@getComponent')
             cy.get('input[placeholder="Enter Category Name"]').should('be.visible').focus().type('Cat.' + Date.now())
             cy.get('.select-V2-container').should('be.visible')
-            //cy.get('.select_V2-container').select('Automation Entity')
+
+
+
+            cy.get('.ca-ui-async-select').contains('Automation_Entity').as('autoEntity')
+            cy.get('@autoEntity').parent().find('.select-V2-container').click()
+            cy.wait('@accountingGrps').then((xhr) => {
+                if(xhr.status === 200) {
+                    agId = xhr.responseBody.data[0].id
+                    agName = xhr.responseBody.data[0].name
+                    cy.get('.options-list').should('contain', agName).find('li').contains(agName).click()
+                }
+            })
+           
         })
+
     })
 })
