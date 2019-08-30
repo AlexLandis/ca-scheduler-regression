@@ -77,6 +77,10 @@ describe('Add a new category', () => {
                 'GET',
                 '/api/accounting/accounting-groups?entityId=17&limit=50&offset=0'
             ).as('accountingGrps')
+            cy.route(
+                'POST',
+                '/api/component/categories'
+            ).as('postNewCategory')
             cy.visit('/club-settings/categories/new?componentId=' + componentId)
             cy.wait('@getComponent')
             cy.get('input[placeholder="Enter Category Name"]').should('be.visible').focus().type('Cat.' + Date.now())
@@ -93,7 +97,9 @@ describe('Add a new category', () => {
                     cy.get('.options-list').should('contain', agName).find('li').contains(agName).click()
                 }
             })
-           
+
+            cy.get('.category-form-submit').contains('Submit').should('be.visible').click()
+            cy.wait('@postNewCategory')
         })
 
     })
