@@ -6,10 +6,6 @@ context('UI - with valid parameters', () => {
         cy.url().should('contain', '/login');
     });
 
-    afterEach(() => {
-      cy.visit('scheduler/logout')
-    })
-
     it('should login through UI', () => {
         cy.get('button').contains('Get Token').as('get_token').should('be.visible');
         cy.get('input[name=API_USER]').should('be.visible').focus().type('globaladmin').blur();

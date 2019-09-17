@@ -4,7 +4,6 @@ describe('Edits existing automation area under Automation_Entity', () => {
         let assertAreaId
         let editedAreaName
         beforeEach(() => {
-            cy.caLogin()
             cy.caSeedAreas()
             cy.server();
             cy.route(
@@ -28,7 +27,7 @@ describe('Edits existing automation area under Automation_Entity', () => {
             cy.get('h3').contains(assertAreaName).should('exist');
         })
 
-        it.only('verifies URL navigation to existing area and edits and saves new values', () => {
+        it('verifies URL navigation to existing area and edits and saves new values', () => {
             cy.route('PUT', '/api/club/location/areas/' + assertAreaId).as('putArea');
             cy.visit('/club-settings/areas/' + assertAreaId + '?entityId=17')
             cy.get('h1').should('contain', assertAreaName)

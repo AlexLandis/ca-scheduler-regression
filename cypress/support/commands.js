@@ -12,8 +12,8 @@
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
 //
+let bearer;
 Cypress.Commands.add('caLogin', () => {
-    cy.visit('/scheduler/logout')
     cy.request({
         method: 'POST',
         url: '/client/auth/authorize',
@@ -31,9 +31,10 @@ Cypress.Commands.add('caLogin', () => {
     })
     .then((response) => {
       expect(response.body.access_token).to.exist;
+      bearer = response.body.access_token;
       window.sessionStorage.setItem('scope', response.body.scope);
       window.sessionStorage.setItem('tokenType', response.body.token_type);
-      window.sessionStorage.setItem('accessToken', response.body.access_token);
+      window.sessionStorage.setItem('accessToken', bearer);
     });
 
 });
@@ -68,7 +69,7 @@ Cypress.Commands.add('caSeedAreas', () => {
         },
         headers: {
             Authorization:
-                "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJOSmJDM1N3RGxNbnd0UHVJY0YwSEN4MGR5ZE1pTTJncmhPUDZpZnRLIiwiaWF0IjoxNTY1MTIwMjIzLCJleHAiOjE1NjUyMDY2MjMsInN1YiI6MSwic2NwIjpbInB1YmxpYyIsInByaXZhdGUiXX0.DWxvZztCix0wQxp511iIbkHOktuH4yNdfLttiRBMjRM",
+                'Bearer ' + bearer,
                 Connection: "keep-alive",
             Cookie: "PHPSESSID=erviummqanof7o62j9rgrkg7vf",
             DNT: 1,

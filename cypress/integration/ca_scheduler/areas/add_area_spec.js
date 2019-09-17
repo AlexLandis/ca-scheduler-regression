@@ -1,7 +1,6 @@
 describe('Adds new Area to Automation_Entity', () => {
 context('with basic valid inputs', () => {
     beforeEach(() => {
-        cy.caLogin()
         cy.visit('/club-settings/entities/17')
     })
 
@@ -14,7 +13,6 @@ context('with basic valid inputs', () => {
         cy.get('input[name="resource.0.name"]').focus().type('Resource ' + Date.now()).blur()
         cy.get('button[id="area-submit"]').click()
         
-        //cy.get('#area-submit').contains('Submit').click()
     });
 });
 });

@@ -4,10 +4,9 @@ describe('Add a new category', () => {
     let entityList
     let agId
     let agName
+    let categoryId
     context('through the UI', () => {
-
         beforeEach(() => {
-            cy.caLogin()
             cy.server()
             cy.route(
                 'GET',
@@ -67,7 +66,7 @@ describe('Add a new category', () => {
             cy.url().should('contain', 'club-settings/categories/new?')
         })
         
-        it.only('inputs required field information for category creation', () => {
+        it('inputs required field information for category creation', () => {
             cy.server()
             cy.route(
                 'GET',
@@ -99,7 +98,13 @@ describe('Add a new category', () => {
             })
 
             cy.get('.category-form-submit').contains('Submit').should('be.visible').click()
-            cy.wait('@postNewCategory')
+            cy.wait('@postNewCategory').then((xhr) => {
+                if(xhr.status == 200) {
+                    categoryId = xhr.responseBody.data[0].id
+                    cy.url().should('contain', categoryId)
+                }
+            })
+
         })
 
     })
