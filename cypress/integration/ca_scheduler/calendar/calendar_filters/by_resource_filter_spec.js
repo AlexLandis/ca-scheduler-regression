@@ -8,6 +8,14 @@ describe('Filters the calendar page', () => {
             cy.server()
             cy.route(
                 'GET',
+                '/api/schedule/events**'
+            ).as('getEvents')
+            cy.route(
+                'GET',
+                'api/club/location/rooms**'
+            ).as('getRooms')
+            cy.route(
+                'GET',
                 '/api/component/components'
             ).as('getComponentList')
             cy.visit('/scheduler')
@@ -26,7 +34,7 @@ describe('Filters the calendar page', () => {
             cy.get('@resourceForm').first().as('byResourceButton')
             cy.get('@byResourceButton').first().as('buttonText')
             cy.get('@buttonText').contains('By Resource').click()
-            cy.wait(500)
+            cy.wait('@getEvents')
 
             cy.get('.entity-select').first().as('entityFilter')
             cy.get('@entityFilter').first().as('entitySelectList')
@@ -36,16 +44,12 @@ describe('Filters the calendar page', () => {
             cy.get('@entitySelection').click()
             cy.get('@entitySelection').contains(entityName).click()
 
-            cy.wait(1000)
 
-            cy.get('.resource-select').first().as('resourceFilter')
-            cy.get('@resourceFilter').first().as('resourceSelectList')
-            cy.get('@resourceSelectList').last().as('resourceSelectDiv')
-            cy.get('@resourceSelectDiv').first().as('resourceSelectionWrapper')
-            cy.get('@resourceSelectionWrapper').first().as('resourceSelection')
-            cy.get('@resourceSelection').click()
-            cy.get('@resourceSelection').contains(resourceName).click()
-
+            cy.wait('@getRooms')
+            cy.wait('@getEvents')
+            cy.get('span[class=selection-text]', {timeout:10000}).as('resource').should('have.length', 4)
+            cy.get('@resource').contains('All Resources').click()
+            cy.get('.options-list').children().contains(resourceName).click()
 
             cy.get('.filter-panel-body').should('be.visible')
             cy.get('.ca-calendar ').should('be.visible')

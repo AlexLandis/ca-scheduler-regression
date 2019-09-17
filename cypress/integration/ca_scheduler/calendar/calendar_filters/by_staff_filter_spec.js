@@ -1,10 +1,18 @@
 describe('Filters the calendar page', () => {
-    let staffUser = 'Automation User'
+    let staffName
     let componentId
     let componentName
     context('By staff UI', () => {
         beforeEach(() => {
             cy.server()
+            cy.route(
+                'GET',
+                '/api/schedule/staff**'
+            ).as('getStaff')
+            cy.route(
+                'GET',
+                '/api/schedule/events**'
+            ).as('getEvents')
             cy.route(
                 'GET',
                 '/api/component/components'
@@ -18,16 +26,18 @@ describe('Filters the calendar page', () => {
                     cy.log(componentName)
                 }
             })
+            cy.wait('@getStaff').then((xhr) => {
+                if(xhr.status === 200) {
+                    staffName = xhr.responseBody.data[0].name
+                }
+            })
         })
         it('should load filtered calendar view', () => {
-            cy.wait(500)
-            cy.get('.staff-select').first().as('staffFilter')
-            cy.get('@staffFilter').last().as('selectionWrapper')
-            cy.get('@selectionWrapper').first().as('selectDiv')
-            cy.get('@selectDiv').should('contain', 'All Staff').click()
-            cy.get('.ca-ui-option-V2').should('be.visible').contains(staffUser).click()
-            cy.get('.calendar-header-title').should('contain', componentName + ' - ' + staffUser)
+            cy.wait('@getEvents')
+            cy.get('.staff-select:nth-child(2) > .ca-ui-select-V2 > .ca-ui-select-V2 > .selection-wrapper > .ca-ui-select-V2 > .selection-text').click()
 
+            cy.get('.options-list').as('staffList').should('be.visible')
+            cy.get('@staffList').scrollIntoView().find('li').contains(staffName).click()
             cy.get('.filter-panel-body').should('be.visible')
             cy.get('.ca-calendar ').should('be.visible')
             cy.get('.component-name').should('be.visible')
