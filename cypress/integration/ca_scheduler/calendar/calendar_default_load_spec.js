@@ -1,4 +1,4 @@
-describe('Navigates to calendar page', () => {
+describe('Loads the calendar page', () => {
     context('through UI', () => {
         it('should load default calendar view', () => {
             cy.visit('/scheduler')
