@@ -4,7 +4,7 @@ describe('Add a new category', () => {
     let entityList
     let agId
     let agName
-    let categoryId
+    //let categoryId
     context('through the UI', () => {
         beforeEach(() => {
             cy.server()
@@ -54,6 +54,7 @@ describe('Add a new category', () => {
                         cy.wrap(entity).should('have.property', 'name');
                         cy.get('.cru-card-read').contains(entity.name).should('be.visible')
                     })
+                    let categoryId
                 })
             })
 

@@ -14,6 +14,7 @@
 //
 let bearer;
 Cypress.Commands.add('caLogin', () => {
+    cy.visit('/scheduler/logout')
     cy.request({
         method: 'POST',
         url: '/client/auth/authorize',
