@@ -11,6 +11,10 @@ describe('Loads calendar tooltip for staff', () => {
                 'GET',
                 '/api/schedule/staff**'
             ).as('getStaff')
+            cy.route(
+                'GET',
+                '/api/schedule/staff/shifts**'
+            ).as('getStaffShift')
             cy.visit('/scheduler')
             cy.wait('@getStaff').then((xhr) => {
                 if(xhr.status === 200) {
@@ -20,8 +24,8 @@ describe('Loads calendar tooltip for staff', () => {
         })
         it('displays staff name and calendar options', () => {
             cy.wait('@getEvents')
-            //cy.get('.cac-cols > .cac-col-header > h4 > .title').contains(staffName).click()
             cy.get(':nth-child(2) > .cac-col-header > h4 > .title').scrollIntoView().click()
+            cy.wait('@getStaffShift')
         })
     })
 })
