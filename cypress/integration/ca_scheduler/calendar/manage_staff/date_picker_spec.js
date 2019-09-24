@@ -32,29 +32,44 @@ describe('Checks date picker functionality', () => {
         it('navigates through future dates successfully', () => {
             cy.get('.with-cal-icon').click()
             cy.get('.text-input').as('originalDate')
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
+
+            for (let i = 0; i < 3; i++) {
+                cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
+            }
 
             cy.get(':nth-child(1) > :nth-child(3) > .no-style').click()
             cy.get('.text-input').should('not.equal', '@originalDate')
         })
 
-        it('confirms dates a year in the future are not available for selection', () => {
+        it('able to navigate one year into the future', () => {
+            
+            let initialYear, nextYear;
+            const calHeader = '.ca-ui-date-picker-header span';
             cy.get('.with-cal-icon').click()
-            cy.get('.text-input').as('originalDate')
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
-            cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
+            cy.get(calHeader).invoke('text').then((text) => {
+                initialYear = parseInt(text.trim().slice(-4));
+                nextYear = initialYear + 1;
+                for (let i = 0; i < 12; i++) {
+                    cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
+                }
+                cy.get(calHeader).should('contain', nextYear.toString())
+                //So far, this test only ensures we are in the next year but
+                //we might consider testing that the name of the month hasn't changed
+            }); 
+        })
+
+        it.only('confirms dates a year in the future are not available for selection', () => {
+            const todayDateNum = Cypress.moment().format('DD');
+            const nextDateNum = Cypress.moment().add(1, 'd').format('DD');
+            const todayAriaLabel = 'button[aria-label*="' + todayDateNum + '"]';
+            const nextDateAriaLabel = 'button[aria-label*="' + nextDateNum + '"]';
+            cy.get('.with-cal-icon').click() 
+            for (let i = 0; i < 12; i++) {
+                cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
+            }
+            cy.get(todayAriaLabel).parent().should('not.have.class', 'disabled');
+            cy.get(nextDateAriaLabel).parent().should('have.class', 'disabled');
+        
         })
     })
 })
