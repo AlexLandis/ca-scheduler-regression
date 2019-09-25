@@ -87,6 +87,30 @@ Cypress.Commands.add('caSeedAreas', () => {
     })
 })
 
+Cypress.Commands.add('caSeedStaffUserToService', (staffName, staffId) => {
+    const areaName = 'Name ' + Date.now()
+    cy.request({
+        method: 'POST',
+        url: 'api/component/types/1017/staff',
+        body: {
+            staff: [{
+                id: staffId
+            }]
+        },
+        headers: {
+            Authorization:
+                'Bearer ' + bearer,
+                Connection: "keep-alive",
+            Cookie: "PHPSESSID=erviummqanof7o62j9rgrkg7vf",
+            DNT: 1,
+            Host: "u2regression.clubautomation.com",
+            Origin: "https://u2regression.clubautomation.com",
+            Pragma: "no-cache",
+            Referer: "https://u2regression.clubautomation.com/club-settings/service-types/1017?categoryId=1016&componentId=12&step=1"
+        }
+    }).as('staffPost')
+})
+
 //
 // -- This is a child command --
 // Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
