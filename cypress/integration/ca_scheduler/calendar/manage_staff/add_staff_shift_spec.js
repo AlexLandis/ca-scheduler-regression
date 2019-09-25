@@ -20,7 +20,7 @@ describe('Add new staff shift', () => {
         it('Adds single non-recurring shift with one service type selection', () => {
             cy.get('.calendar-controls > .ca-ui-btn > .ca-ui-i-clock').click()
             cy.wait('@getStaff')
-            cy.get('.empty-shift > .ca-ui-i', {timeout:5000}).first().as('emptyShift').should('not.have.attr', 'class', 'disabled')
+            cy.get('.empty-shift > .ca-ui-i', {timeout:6000}).first().as('emptyShift').should('not.have.attr', 'class', 'disabled')
             cy.wait(1000)
             cy.get('@emptyShift').scrollIntoView({timeout:5000}).click()
             cy.get(':nth-child(1) > .time-input-row > :nth-child(1) > label > input').focus().type('8:00am').blur()
