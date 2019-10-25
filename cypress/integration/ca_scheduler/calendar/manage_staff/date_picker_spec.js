@@ -27,14 +27,14 @@ describe('Checks date picker functionality', () => {
             cy.get('.calendar-controls > .ca-ui-btn > .ca-ui-i-clock').click()
             cy.wait('@getStaff')
             cy.wait('@getClubDetails')
-            cy.wait('@getEntities')
+            cy.wait('@getEntities', {timeout: 10000})
         })
         it('navigates through future dates successfully', () => {
             cy.get('.with-cal-icon').click()
             cy.get('.text-input').as('originalDate')
 
             for (let i = 0; i < 3; i++) {
-                cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)').click()
+                cy.get('.ca-ui-date-picker-header > .flex > :nth-child(3)', {timeout:10000}).click()
             }
 
             cy.get(':nth-child(1) > :nth-child(3) > .no-style').click()
@@ -58,7 +58,7 @@ describe('Checks date picker functionality', () => {
             }); 
         })
 
-        it.only('confirms dates a year in the future are not available for selection', () => {
+        it('confirms dates a year in the future are not available for selection', () => {
             const todayDateNum = Cypress.moment().format('DD');
             const nextDateNum = Cypress.moment().add(1, 'd').format('DD');
             const todayAriaLabel = 'button[aria-label*="' + todayDateNum + '"]';

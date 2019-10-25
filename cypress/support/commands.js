@@ -14,29 +14,10 @@
 //
 let bearer;
 Cypress.Commands.add('caLogin', () => {
-    cy.visit('/scheduler/logout')
-    cy.request({
-        method: 'POST',
-        url: '/client/auth/authorize',
-        body: {
-            grant_type : 'password',
-            password: 'Dassen!985',
-            scope: 'public private',
-            username: 'globaladmin'
-        },
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            Authorization: 'Basic bHNfaWQ6bHNfc2VjcmV0'
-        }
-
-    })
-    .then((response) => {
-      expect(response.body.access_token).to.exist;
-      bearer = response.body.access_token;
-      window.sessionStorage.setItem('scope', response.body.scope);
-      window.sessionStorage.setItem('tokenType', response.body.token_type);
-      window.sessionStorage.setItem('accessToken', bearer);
-    });
+    cy.visit('')
+      cy.get('input[value=Username]').first().focus().type('globaladmin').blur();
+      cy.get('#password').invoke('show').focus().type('Dassen!985').blur()
+      cy.get('.buttons-group > .buttons-group-wrapper > .btn-small').contains('Login').click()
 
 });
 
