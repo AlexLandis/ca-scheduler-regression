@@ -18,7 +18,6 @@ Cypress.Commands.add('caLogin', () => {
       cy.get('input[value=Username]').first().focus().type('globaladmin').blur();
       cy.get('#password').invoke('show').focus().type('Dassen!985').blur()
       cy.get('.buttons-group > .buttons-group-wrapper > .btn-small').contains('Login').click()
-
 });
 
 Cypress.Commands.add('caSeedAreas', () => {
