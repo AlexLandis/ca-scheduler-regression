@@ -15,8 +15,8 @@ context('with basic valid inputs', () => {
         cy.contains('Add Area').click()
 
         //inputs general information
-        cy.get('input[placeholder="Enter area name"]').focus().type('Area ' + Date.now()).blur()
-        cy.get('input[name="resource.0.name"]').focus().type('Resource ' + Date.now()).blur()
+        cy.get('input[placeholder="Enter area name"]').focus().type('Area ' + Date.now()).focus().blur()
+        cy.get('input[name="resource.0.name"]').focus().type('Resource ' + Date.now()).focus().blur()
         cy.get('button[id="area-submit"]').click()
         cy.wait('@postArea').then((xhr) => {
             if(xhr.status === 200) {

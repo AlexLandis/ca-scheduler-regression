@@ -4,7 +4,6 @@ describe('Add a new category', () => {
     let entityList
     let agId
     let agName
-    //let categoryId
     context('through the UI', () => {
         beforeEach(() => {
             cy.server()
@@ -16,6 +15,10 @@ describe('Add a new category', () => {
                 'GET',
                 '/api/component/components'
             ).as('getComponentList')
+            cy.route(
+                'POST',
+                'api/component/categories'
+            ).as('postNewCategory')
             cy.visit('/club-settings/components')
             cy.get('h1').contains('Service Components').should('be.visible')
             cy.wait('@getComponentList').then((xhr) => {
@@ -32,32 +35,6 @@ describe('Add a new category', () => {
             cy.get('.ca-ui-tile-grid').as('tileGrid').should('be.visible')
             cy.get('@tileGrid').children().as('componentTile').should('be.visible')
             cy.get('@componentTile').contains(componentName).should('be.visible')
-        })
-
-        context('Club Entities', () => {
-            beforeEach(() => { 
-            cy.server()
-            cy.route(
-                'GET',
-                'api/component/components/' + componentId
-            ).as('clubEntityList')
-            cy.visit('/club-settings/components/' + componentId)
-            cy.wait('@clubEntityList')
-            cy.get('@clubEntityList').its('responseBody.data.entities').as('entities')
-        })
-        
-            describe('fetched Entities', () => {
-                Cypress._.range(0, 1).forEach((k) => {
-                    it(`# ${k}`, function() {
-                        const entity = this.entities[k];
-                        cy.log(`entity ${entity.id} ${entity.name}`);
-                        cy.wrap(entity).should('have.property', 'name');
-                        cy.get('.cru-card-read').contains(entity.name).should('be.visible')
-                    })
-                    let categoryId
-                })
-            })
-
         })
 
         it('navigates to component and selects add category button', () => {
@@ -83,7 +60,7 @@ describe('Add a new category', () => {
             ).as('postNewCategory')
             cy.visit('/club-settings/categories/new?componentId=' + componentId)
             cy.wait('@getComponent')
-            cy.get('input[placeholder="Enter Category Name"]').should('be.visible').focus().type('Cat.' + Date.now())
+            cy.get('input[placeholder="Enter Category Name"]').should('be.visible').focus().type('zCat.' + Date.now())
             cy.get('.select-V2-container').should('be.visible')
 
 
@@ -100,8 +77,9 @@ describe('Add a new category', () => {
 
             cy.get('.category-form-submit').contains('Submit').should('be.visible').click()
             cy.wait('@postNewCategory').then((xhr) => {
-                if(xhr.status == 200) {
-                    categoryId = xhr.responseBody.data[0].id
+                if(xhr.status === 200) {
+                    let categoryId
+                    categoryId = xhr.responseBody.data.id
                     cy.url().should('contain', categoryId)
                 }
             })

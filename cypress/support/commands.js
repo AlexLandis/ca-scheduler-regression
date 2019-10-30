@@ -21,29 +21,6 @@ Cypress.Commands.add('caLogin', () => {
 });
 
 Cypress.Commands.add('caSeedAreas', () => {
-    cy.request({
-        method: 'POST',
-        url: '/client/auth/authorize',
-        body: {
-            grant_type : 'password',
-            password: 'Dassen!985',
-            scope: 'public private',
-            username: 'globaladmin'
-        },
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            Authorization: 'Basic bHNfaWQ6bHNfc2VjcmV0'
-        }
-
-    })
-    .then((response) => {
-      expect(response.body.access_token).to.exist;
-      bearer = response.body.access_token;
-      window.sessionStorage.setItem('scope', response.body.scope);
-      window.sessionStorage.setItem('tokenType', response.body.token_type);
-      window.sessionStorage.setItem('accessToken', bearer);
-    });
-
     const areaName = 'Name ' + Date.now()
     cy.request({
         method: 'POST',
