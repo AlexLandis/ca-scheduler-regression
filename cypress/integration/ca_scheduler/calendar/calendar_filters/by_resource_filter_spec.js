@@ -47,7 +47,7 @@ describe('Filters the calendar page', () => {
 
             cy.wait('@getRooms')
             cy.wait('@getEvents')
-            cy.get('span[class=selection-text]', {timeout:10000}).as('resource').should('have.length', 4)
+            cy.get('span[class=selection-text]').as('resource').should('have.length', 4)
             cy.get('@resource').contains('All Resources').click()
             cy.get('.options-list').children().contains(resourceName).click()
 

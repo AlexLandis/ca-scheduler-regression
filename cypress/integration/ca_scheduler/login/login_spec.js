@@ -6,7 +6,7 @@ describe('Login spec', () => {
       cy.get('#password').invoke('show').focus().type('Dassen!985').blur()
       cy.get('.buttons-group > .buttons-group-wrapper > .btn-small').contains('Login').click()
       cy.visit('/scheduler')
-      cy.get('.ca-calendar ', {timeout: 100000}).should('be.visible')
+      cy.get('.ca-calendar ').should('be.visible')
       });
     }); 
   });
