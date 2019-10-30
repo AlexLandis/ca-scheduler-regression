@@ -43,18 +43,19 @@ describe('Filters the calendar page', () => {
             cy.get('@entitySelectionWrapper').first().as('entitySelection')
             cy.get('@entitySelection').click()
             cy.get('@entitySelection').contains(entityName).click()
+            cy.get('button').contains('Apply Filters').click()
 
 
             cy.wait('@getRooms')
             cy.wait('@getEvents')
-            cy.get('span[class=selection-text]').as('resource').should('have.length', 4)
+            cy.get('span[class=selection-text]').as('resource')
             cy.get('@resource').contains('All Resources').click()
-            cy.get('.options-list').children().contains(resourceName).click()
+            cy.get('.options-list').children().contains(resourceName).scrollIntoView().click()
 
             cy.get('.filter-panel-body').should('be.visible')
             cy.get('.ca-calendar ').should('be.visible')
-            cy.get('.component-name').should('be.visible')
-            cy.get('.ca-ui-toggle-group ').children().as('range').should('be.visible').and('have.length', 4)
+            cy.get('.title-primary').should('be.visible')
+            cy.get('.ca-ui-toggle-group ').children().as('range').should('be.visible')
             cy.get('@range').first().should('contain', 'Today').and('not.have.css', 'background-color', 'rgb(19, 151, 225)')
             cy.get('@range').eq(1).should('contain', 'Week').and('have.css', 'background-color', 'rgb(19, 151, 225)')
         })

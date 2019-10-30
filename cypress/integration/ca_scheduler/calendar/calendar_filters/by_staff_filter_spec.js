@@ -28,7 +28,7 @@ describe('Filters the calendar page', () => {
             })
             cy.wait('@getStaff').then((xhr) => {
                 if(xhr.status === 200) {
-                    staffName = xhr.responseBody.data[0].name
+                    staffName = xhr.responseBody.data[1].name
                 }
             })
         })
@@ -37,11 +37,14 @@ describe('Filters the calendar page', () => {
             cy.get('.staff-select:nth-child(2) > .ca-ui-select-V2 > .ca-ui-select-V2 > .selection-wrapper > .ca-ui-select-V2 > .selection-text').click()
 
             cy.get('.options-list').as('staffList').should('be.visible')
-            cy.get('@staffList').scrollIntoView().find('li').contains(staffName).click()
+            cy.get('@staffList').scrollIntoView().find('li').children().as('staffList')
+            cy.get('@staffList').eq(1).click()
+            cy.get('button').contains('Apply Filters').click()
+            
             cy.get('.filter-panel-body').should('be.visible')
             cy.get('.ca-calendar ').should('be.visible')
-            cy.get('.component-name').should('be.visible')
-            cy.get('.ca-ui-toggle-group ').children().as('range').should('be.visible').and('have.length', 4)
+            cy.get('.title-primary').should('be.visible')
+            cy.get('.ca-ui-toggle-group ').children().as('range').should('be.visible')
             cy.get('@range').first().should('contain', 'Today').and('not.have.css', 'background-color', 'rgb(19, 151, 225)')
             cy.get('@range').eq(1).should('contain', 'Week').and('have.css', 'background-color', 'rgb(19, 151, 225)')
         })
