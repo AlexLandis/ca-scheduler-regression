@@ -29,7 +29,6 @@ describe('Changes default entity', () => {
             cy.get('.calendar-controls > .ca-ui-btn > .ca-ui-i-clock').click()
             cy.wait('@getStaff')
             cy.wait('@getClubDetails')
-            cy.wait('@getEntities')
             cy.get('.entity-select > :nth-child(1) > .select-V2-container > .selection-wrapper > .selection').as('firstEntity').click()
             cy.get('.entity-select:nth-child(2) > .ca-ui-select-V2 > .ca-ui-select-V2 > .selection-wrapper > .ca-ui-select-V2 > .ca-ui-select-V2 > .ca-ui-select-V2').last().click()
             cy.get('.entity-select > :nth-child(1) > .select-V2-container > .selection-wrapper > .selection').as('secondEntity').should('not.equal', '@firstEntity')
