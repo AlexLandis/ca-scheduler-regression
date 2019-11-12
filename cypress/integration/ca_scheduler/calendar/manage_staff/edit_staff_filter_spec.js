@@ -1,4 +1,4 @@
-describe('Changes default entity', () => {
+describe('Changes default staff member', () => {
     context('through UI dropdown', () => {
         beforeEach(() => {
             cy.server()
@@ -29,7 +29,6 @@ describe('Changes default entity', () => {
             cy.get('.calendar-controls > .ca-ui-btn > .ca-ui-i-clock').click()
             cy.wait('@getStaff')
             cy.wait('@getClubDetails')
-            cy.wait('@getEntities')
             cy.get('.ca-ui-async-select > .select-V2-container > .selection-wrapper > .selection').as('allStaff').click()
             cy.get('.staff-select > .ca-ui-select-V2 > .ca-ui-select-V2 > .selection-wrapper > .ca-ui-select-V2 > .ca-ui-select-V2 > .ca-ui-select-V2').last().click()
             cy.get('.staff-select > :nth-child(1) > .select-V2-container > .selection-wrapper > .selection').as('staffMember').should('not.equal', '@allStaff')
