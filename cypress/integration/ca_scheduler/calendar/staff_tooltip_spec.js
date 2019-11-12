@@ -20,7 +20,7 @@ describe('Loads calendar tooltip for staff', () => {
             cy.visit('/scheduler')
             cy.wait('@getStaff')
         })
-        it.only('displays staff name and details', () => {
+        it('displays staff name and details', () => {
             cy.wait('@getEvents')
             cy.get('.cac-cols > .cac-column:nth-child(1) > .cac-col-header > h4 > .title').click({force:true})
             cy.get('.staff-detail-tooltip').should('be.visible')
