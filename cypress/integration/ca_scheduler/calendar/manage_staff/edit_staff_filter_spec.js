@@ -25,7 +25,7 @@ describe('Changes default staff member', () => {
             cy.visit('/scheduler')
             cy.wait('@getEvents')
         })
-        it('successfully changes entity', () => {
+        it('successfully changes staff member', () => {
             cy.get('.calendar-controls > .ca-ui-btn > .ca-ui-i-clock').click()
             cy.wait('@getStaff')
             cy.wait('@getClubDetails')
